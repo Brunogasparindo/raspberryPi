@@ -7,19 +7,22 @@ import matplotlib.pyplot as plt
 import json
 from urllib.request import urlopen
 
-# --- API (URL) ---
-url = "http://192.168.137.64:5000/items"
-response = urlopen(url)
-
-data_json = json.loads(response.read())
 
 
 # --- API (Abfrage) ---
 def lightQuery():
-    response = urlopen(url)
-    data_json = json.loads(response.read())
+    # --- API (URL) ---
+    # url = "http://192.168.137.64:5000/items"
+    # response = urlopen(url)
+    # data_json = json.loads(response.read())
+    # print(data_json)
+    # response = urlopen(url)
+    # data_json = json.loads(response.read())
     
-    return data_json
+    # return data_json
+
+    return [[1, 1234, "2022-09-27 13:13:13:1234"], [2, 4321, "2022-09-27 13:13:13:4321"]]
+
 
 def fillTableIn(table):
     values = lightQuery()
@@ -45,13 +48,7 @@ def fillArray(isBrightness):
 
 def showGraph():
         x_val = fillArray(False)
-        print("+++++++++++++++++++++=======XXXXX =============================================")
-        print(len(x_val))
-        print(x_val)
         y_val = fillArray(True)
-        print("+++++++++++++++++++++===========YYYYYY =========================================")
-        print(len(y_val))
-        print(y_val)
 
         plt.plot(x_val, y_val)
         plt.tight_layout()
@@ -59,7 +56,7 @@ def showGraph():
         plt.show()
 
 
-class brightnessHistoryFrame(ttk.Frame):
+class BrightnessHistoryFrame(ttk.Frame):
 
     # initialize
     def __init__(self, container):
@@ -79,7 +76,7 @@ class brightnessHistoryFrame(ttk.Frame):
         self.rowconfigure(12, minsize=5)
 
         # Show histoy table
-        lightQuery()
+        # lightQuery()
         self.table = ttk.Treeview(self)
         self.table.grid(column=0, row=2, sticky=tk.W, padx=20)
         self.table['columns'] = ('brightness', 'date')
@@ -93,6 +90,5 @@ class brightnessHistoryFrame(ttk.Frame):
 
         fillTableIn(self.table)
 
-        # Graphic
-        showGraph()
-
+        buttonSensorHistory = tk.Button(text="Show graph", command=showGraph)
+        buttonSensorHistory.pack(padx=20, pady=40)

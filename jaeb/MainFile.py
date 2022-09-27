@@ -2,7 +2,8 @@ import sys
 sys.path.append('./jaeb/Frames')
 import tkinter as tk
 import Frames.BrightnessHistory as bhf
-
+import Frames.Navigation as navBar
+import Frames.ConfigFrame as cf
 
 
 #setup the base window
@@ -12,8 +13,8 @@ class App(tk.Tk):
         super().__init__()
 
         self.title('Artificial-Light-Sensor-App')
-        window_width = 480
-        window_height = 600
+        window_width = 600
+        window_height = 800
 
         # get the screen dimension
         screen_width = self.winfo_screenwidth()
@@ -28,8 +29,15 @@ class App(tk.Tk):
         self.resizable(False, False)
         self.iconbitmap('.\jaeb\style\ScooTeq_Icon.ico')
 
-        self.brightnessVisualizationFrame = bhf.brightnessHistoryFrame(self)
-        self.brightnessVisualizationFrame.pack()
+        self.navigationBar = navBar.NavBar(self)
+        self.navigationBar.pack()
+
+
+    def navigateHistory(self):
+        self.brightnessHistoryFrame = bhf.BrightnessHistoryFrame(self)
+
+    def navigateConfig(self):
+        self.configFrame = cf.ConfigFrame(self)
 
 root = App()
 try:

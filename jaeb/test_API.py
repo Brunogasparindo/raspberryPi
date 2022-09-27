@@ -1,5 +1,6 @@
 import json
 from urllib.request import urlopen
+import sqlite3
 
 url = "http://192.168.137.64:5000/items"
 
@@ -10,17 +11,18 @@ data_json = json.loads(response.read())
 for item in data_json:
     print(item[0], item[1], item[2])
 
-# DB-QUERY
-# def lightQuery():
-#     connection = sqlite3.connect('jaeb/db/light.db')
-#     cursor = connection.cursor()
-#     cursor.execute(f'SELECT * FROM light;')
-#     values = cursor.fetchall()
+#DB-QUERY
+def lightQuery():
+    connection = sqlite3.connect('jaeb/db/light.db')
+    cursor = connection.cursor()
+    abc = "123"
+    cursor.execute(f'SELECT {abc}* FROM light;')
+    values = cursor.fetchall()
+    cursor.fetchone()[0]
+    connection.commit()
+    cursor.close()
 
-#     connection.commit()
-#     cursor.close()
-
-#     return values
+    return values
 
 # prepare data for the GUI
 # def fillTableIn(table):
