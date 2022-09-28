@@ -13,7 +13,7 @@ class App(tk.Tk):
         super().__init__()
 
         self.title('Artificial-Light-Sensor-App')
-        window_width = 800
+        window_width = 600
         window_height = 600
 
         # get the screen dimension
