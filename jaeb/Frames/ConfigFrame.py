@@ -1,5 +1,10 @@
 import tkinter as tk
-from tkinter import HORIZONTAL, ON, VERTICAL, ttk
+from tkinter import  ttk
+from urllib import request
+from tktimepicker import AnalogPicker, AnalogThemes
+import requests
+
+
 
 
 class ConfigFrame(ttk.Frame):
@@ -21,38 +26,24 @@ class ConfigFrame(ttk.Frame):
         self.var_2 = tk.BooleanVar()
         self.var_3 = tk.IntVar(value=4)
         self.var_4 = tk.StringVar(value=self.option_menu_list[1])
-        self.var_5 = tk.DoubleVar(value=75.0)
+        self.var_5 = tk.DoubleVar(value=100.0)
+        self.var_6 = tk.DoubleVar(value=100.0)
+        self.var_7 = tk.DoubleVar(value=100.0)
+        self.var_8 = tk.DoubleVar(value=80.0)
 
         # Create widgets :)
         self.setup_widgets()
+
+
+    def save(self):
+        print(self.fromInput.get(), self.untilInput.get())
+        print(self.var_8.get())
+
+        requests.post('http://192.168.137.64:5000/setConfig', data={'test': '123'})
+        return
     
     
     def setup_widgets(self):
-        # Create a Frame for the Checkbuttons
-
-
-        # Create a Frame for the Radiobuttons
-        self.radio_frame = ttk.LabelFrame(self, text="RGB", padding=(20, 10))
-        self.radio_frame.grid(row=2, column=0, padx=(20, 10), pady=10, sticky="nsew")
-
-        # Radiobuttons
-        self.radio_1 = ttk.Radiobutton(
-            self.radio_frame, text="RED", variable=self.var_3, value=1
-        )
-        self.radio_1.grid(row=0, column=0, padx=5, pady=10, sticky="nsew")
-        self.radio_2 = ttk.Radiobutton(
-            self.radio_frame, text="GREEN", variable=self.var_3, value=2
-        )
-        self.radio_2.grid(row=1, column=0, padx=5, pady=10, sticky="nsew")
-        self.radio_4 = ttk.Radiobutton(
-            self.radio_frame, text="BLUE", variable=self.var_3, value=3
-        )
-        self.radio_4.grid(row=3, column=0, padx=5, pady=10, sticky="nsew")
-
-        # Separator
-        self.separator = ttk.Separator(self, orient='vertical')
-        self.separator.grid(row=1, column=1, padx=(50, 50), pady=10, sticky="ew")
-
         # Create a Frame for input widgets
         self.widgets_frame = ttk.Frame(self, padding=(0, 0, 0, 10))
         self.widgets_frame.grid(
@@ -60,89 +51,94 @@ class ConfigFrame(ttk.Frame):
         )
         self.widgets_frame.columnconfigure(index=0, weight=1)
 
-        # Spinbox
-        self.spinbox = ttk.Spinbox(self.widgets_frame, from_=0, to=24, increment=0.1)
-        self.spinbox.insert(0, "UHRZEIT")
-        self.spinbox.grid(row=1, column=0, padx=5, pady=10, sticky="ew")
-
-        """"
-        # Read-only combobox
-        self.readonly_combo = ttk.Combobox(
-            self.widgets_frame, state="readonly", values=self.readonly_combo_list
-        )
-        self.readonly_combo.current(0)
-        self.readonly_combo.grid(row=3, column=0, padx=5, pady=10, sticky="ew")
-        """
-        # Switch
-        self.switch = ttk.Checkbutton(
-            self.widgets_frame, style="Switch.TCheckbutton"
-        )
-        self.switch.grid(row=10, column=0, padx=0, pady=0, sticky="nsew")
-
-         # Panedwindow
+        # Panedwindow
         self.paned = ttk.PanedWindow(self)
         self.paned.grid(row=0, column=2, pady=(25, 5), sticky="nsew", rowspan=3)    
         # Notebook, pane #2
         self.pane_2 = ttk.Frame(self.paned, padding=5)
         self.paned.add(self.pane_2, weight=3)
-        """
-        self.notebook = ttk.Notebook(self.pane_2)
-        self.notebook.pack(fill="both", expand=True)
 
-        # Tab #1
-        self.tab_1 = ttk.Frame(self.notebook)
-        for index in [0, 1]:
-            self.tab_1.columnconfigure(index=index, weight=1)
-            self.tab_1.rowconfigure(index=index, weight=1)
-        self.notebook.add(self.tab_1, text="WÄRME")
-        """
-        self.scale_frame = ttk.LabelFrame(
+        # Scale red
+        self.scale_frame_red = ttk.LabelFrame(
             self,
-            text="WÄRME",
+            text="RED",
             padding=(20, 10))
-        self.scale_frame.grid(row=2, column=5, padx=(20, 10), pady=10, sticky="nsew")
-        # Scale
-        self.scale = ttk.Scale(
-            self.scale_frame,
-            from_=255,
-            to=-255,
-            variable=self.var_5,
-            command=lambda event: self.var_5.set(self.scale.get()),
-        )
-        self.scale.grid(row=0, column=0, padx=(20, 10), pady=(20, 0), sticky="ew")
-
-        # Label
-        self.label = ttk.Label(
-            self.scale_frame,
-            text="Kälter ---------- Wärmer",
-            justify="center",
-            font=("-size", 15, "-weight", "bold"),
-        )
-        self.label.grid(row=1, column=0, pady=10, columnspan=2)
-
+        self.scale_frame_red.grid(row=2, column=1, padx=(20, 10), pady=10, sticky="nsew")
         
+        self.scaleRed = ttk.Scale(
+            self.scale_frame_red,
+            from_=0,
+            to=100,
+            variable=self.var_5,
+            command=lambda event: self.var_5.set(self.scaleRed.get()),
+        )
+        self.scaleRed.grid(row=0, column=0, padx=(20, 10), pady=(20, 0), sticky="ew")
+
+        # Scale blue
+        self.scale_frame_blue = ttk.LabelFrame(
+            self,
+            text="BLUE",
+            padding=(20, 10))
+        self.scale_frame_blue.grid(row=3, column=1, padx=(20, 10), pady=10, sticky="nsew")
+        
+        self.scaleBlue = ttk.Scale(
+            self.scale_frame_blue,
+            from_=0,
+            to=100,
+            variable=self.var_6,
+            command=lambda event: self.var_6.set(self.scaleBlue.get()),
+        )
+        self.scaleBlue.grid(row=0, column=0, padx=(20, 10), pady=(20, 0), sticky="ew")
+
+        # Scale green
+        self.scale_frame_green = ttk.LabelFrame(
+            self,
+            text="GREEN",
+            padding=(20, 10))
+        self.scale_frame_green.grid(row=4, column=1, padx=(20, 10), pady=10, sticky="nsew")
+        
+        self.scaleGreen = ttk.Scale(
+            self.scale_frame_green,
+            from_=0,
+            to=100,
+            variable=self.var_7,
+            command=lambda event: self.var_7.set(self.scaleGreen.get()),
+        )
+        self.scaleGreen.grid(row=0, column=0, padx=(20, 10), pady=(20, 0), sticky="ew")
+
+
+        # Scale Brightness
+        self.scale_frame_bright = ttk.LabelFrame(
+            self,
+            text="BRIGHTNESS",
+            padding=(20, 10))
+        self.scale_frame_bright.grid(row=5, column=1, padx=(20, 10), pady=10, sticky="nsew")
+        
+        self.scaleBright = ttk.Scale(
+            self.scale_frame_bright,
+            from_=0,
+            to=100,
+            variable=self.var_8,
+            command=lambda event: self.var_8.set(self.scaleBright.get()),
+        )
+        self.scaleBright.grid(row=0, column=0, padx=(20, 10), pady=(20, 0), sticky="ew")
 
         # Sizegrip
         self.sizegrip = ttk.Sizegrip(self)
         self.sizegrip.grid(row=100, column=100, padx=(0, 5), pady=(0, 5))
 
+        # Time
+        self.fromLabel = ttk.Label(self, text='From')
+        self.fromLabel.grid(row=6, column=0, sticky=tk.W, padx=40)
+        self.fromInput = ttk.Entry(self, width=30)
+        # self.fromInput = AnalogPicker(self)
+        self.fromInput.grid(row=6, column=1, sticky=tk.W, padx=40)
 
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     root.title("")
+        self.untilLabel = ttk.Label(self, text='Until')
+        self.untilLabel.grid(row=7, column=0, sticky=tk.W, padx=40)
+        self.untilInput = ttk.Entry(self, width=30)
+        # self.untilInput = AnalogPicker(self)
+        self.untilInput.grid(row=7, column=1, sticky=tk.W, padx=40)
 
-#     # Simply set the theme
-#     root.tk.call("source", "azure.tcl")
-#     root.tk.call("set_theme", "dark")
-
-#     app = App(root)
-#     app.pack(fill="both", expand=True)
-
-#     # Set a minsize for the window, and place it in the middle
-#     root.update()
-#     root.minsize(root.winfo_width(), root.winfo_height())
-#     x_cordinate = int((root.winfo_screenwidth() / 2) - (root.winfo_width() / 2))
-#     y_cordinate = int((root.winfo_screenheight() / 2) - (root.winfo_height() / 2))
-#     root.geometry("+{}+{}".format(x_cordinate, y_cordinate-20))
-
-#     root.mainloop()
+        self.saveConfig = tk.Button(text="Save", command=self.save)
+        self.saveConfig.pack(side=tk.BOTTOM)

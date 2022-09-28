@@ -12,16 +12,16 @@ from urllib.request import urlopen
 # --- API (Abfrage) ---
 def lightQuery():
     # --- API (URL) ---
-    # url = "http://192.168.137.64:5000/items"
-    # response = urlopen(url)
-    # data_json = json.loads(response.read())
-    # print(data_json)
-    # response = urlopen(url)
-    # data_json = json.loads(response.read())
+    url = "http://192.168.137.64:5000/items"
+    response = urlopen(url)
+    data_json = json.loads(response.read())
+    print(data_json)
+    response = urlopen(url)
+    data_json = json.loads(response.read())
     
-    # return data_json
+    return data_json
 
-    return [[1, 1234, "2022-09-27 13:13:13:1234"], [2, 4321, "2022-09-27 13:13:13:4321"]]
+    # return [[1, 1234, "2022-09-27 13:13:13:1234"], [2, 4321, "2022-09-27 13:13:13:4321"]]
 
 
 def fillTableIn(table):

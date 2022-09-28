@@ -13,8 +13,8 @@ class App(tk.Tk):
         super().__init__()
 
         self.title('Artificial-Light-Sensor-App')
-        window_width = 600
-        window_height = 800
+        window_width = 800
+        window_height = 600
 
         # get the screen dimension
         screen_width = self.winfo_screenwidth()
@@ -27,7 +27,7 @@ class App(tk.Tk):
         # set the position of the window to the center of the screen
         self.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
         self.resizable(False, False)
-        self.iconbitmap('.\jaeb\style\ScooTeq_Icon.ico')
+        self.iconbitmap('.\jaeb\style\Icon.ico')
 
         self.navigationBar = navBar.NavBar(self)
         self.navigationBar.pack()
